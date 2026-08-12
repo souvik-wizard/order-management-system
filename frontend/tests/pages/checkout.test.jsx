@@ -55,7 +55,7 @@ describe('CheckoutPage', () => {
     expect(screen.getByLabelText(/delivery address/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/phone number/i)).toBeInTheDocument();
     expect(screen.getByText('Classic Cheeseburger × 2')).toBeInTheDocument();
-    expect(screen.getAllByText('$19.98')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('₹19.98')[0]).toBeInTheDocument();
   });
 
   it('shows validation errors when fields are empty', async () => {

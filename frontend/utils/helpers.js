@@ -6,12 +6,12 @@
 /**
  * Format a number as a currency string.
  * @param {number} amount
- * @param {string} [currency='USD']
- * @param {string} [locale='en-US']
- * @returns {string}  e.g. "$12.99"
+ * @param {string} [currency='INR']
+ * @param {string} [locale='en-IN']
+ * @returns {string}  e.g. "₹199.00"
  */
-export const formatCurrency = (amount, currency = 'USD', locale = 'en-US') =>
-  new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
+export const formatCurrency = (amount, currency = 'INR', locale = 'en-IN') =>
+  new Intl.NumberFormat(locale, { style: 'currency', currency, maximumFractionDigits: 2 }).format(amount);
 
 /**
  * Format a Date (or ISO string) into a human-readable string.

@@ -47,7 +47,7 @@ export default function MenuItemCard({ item }) {
         <p className="text-gray-500 text-sm mt-1 flex-1 line-clamp-2">{item.description}</p>
 
         <div className="mt-4 flex items-center justify-between">
-          <span className="font-bold text-gray-900 text-lg">${item.price.toFixed(2)}</span>
+          <span className="font-bold text-gray-900 text-lg">₹{item.price.toFixed(2)}</span>
 
           <button
             onClick={handleAdd}

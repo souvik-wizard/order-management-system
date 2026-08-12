@@ -156,7 +156,7 @@ export default function CheckoutPage() {
             {cartItems.map((item) => (
               <div key={item.id} className="flex justify-between text-sm text-gray-600">
                 <span>{item.name} × {item.quantity}</span>
-                <span>${(item.price * item.quantity).toFixed(2)}</span>
+                <span>₹{(item.price * item.quantity).toFixed(2)}</span>
               </div>
             ))}
           </div>
@@ -166,7 +166,7 @@ export default function CheckoutPage() {
           </div>
           <div className="flex justify-between font-bold text-gray-900 text-base mt-1">
             <span>Total</span>
-            <span>${totalPrice.toFixed(2)}</span>
+            <span>₹{totalPrice.toFixed(2)}</span>
           </div>
         </section>
 

@@ -25,6 +25,12 @@ export default function Navbar() {
             Menu
           </Link>
           <Link
+            href="/orders"
+            className="text-sm font-medium text-gray-600 hover:text-orange-500 transition-colors"
+          >
+            Orders
+          </Link>
+          <Link
             href="/cart"
             className="relative flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-orange-500 transition-colors"
           >

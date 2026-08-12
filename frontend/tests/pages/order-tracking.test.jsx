@@ -85,7 +85,7 @@ describe('OrderTrackingPage', () => {
     expect(screen.getByText('Order Confirmed!')).toBeInTheDocument();
     expect(screen.getByText('mock-order-id-789')).toBeInTheDocument();
     expect(screen.getByText('Classic Cheeseburger × 1')).toBeInTheDocument();
-    expect(screen.getAllByText('$9.99')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('₹9.99')[0]).toBeInTheDocument();
     expect(screen.getByText('Jane Smith')).toBeInTheDocument();
     expect(screen.getByText('456 Delivery Rd')).toBeInTheDocument();
   });

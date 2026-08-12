@@ -193,13 +193,13 @@ export default function OrderTrackingPage() {
           {order.items.map((item, idx) => (
             <div key={idx} className="flex justify-between text-sm text-gray-600">
               <span>{item.name} × {item.quantity}</span>
-              <span>${item.subtotal.toFixed(2)}</span>
+              <span>₹{item.subtotal.toFixed(2)}</span>
             </div>
           ))}
         </div>
         <div className="flex justify-between font-bold text-gray-900 border-t border-gray-100 pt-3">
           <span>Total</span>
-          <span>${order.totalAmount.toFixed(2)}</span>
+          <span>₹{order.totalAmount.toFixed(2)}</span>
         </div>
       </div>
 

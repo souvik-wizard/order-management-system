@@ -55,7 +55,7 @@ export default function CartPage() {
       <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
         <div className="flex justify-between text-sm text-gray-500 mb-2">
           <span>Subtotal ({items.length} {items.length === 1 ? 'item' : 'items'})</span>
-          <span>${totalPrice.toFixed(2)}</span>
+          <span>₹{totalPrice.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-sm text-gray-500 mb-4">
           <span>Delivery fee</span>
@@ -63,7 +63,7 @@ export default function CartPage() {
         </div>
         <div className="flex justify-between font-bold text-gray-900 text-lg border-t border-gray-100 pt-4">
           <span>Total</span>
-          <span>${totalPrice.toFixed(2)}</span>
+          <span>₹{totalPrice.toFixed(2)}</span>
         </div>
       </div>
 

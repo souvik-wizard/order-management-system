@@ -18,7 +18,7 @@ describe('MenuItemCard Component', () => {
 
     expect(screen.getByText('Burger')).toBeInTheDocument();
     expect(screen.getByText('Juicy burger')).toBeInTheDocument();
-    expect(screen.getByText('$9.99')).toBeInTheDocument();
+    expect(screen.getByText('₹9.99')).toBeInTheDocument();
     expect(screen.getByText('Burgers')).toBeInTheDocument();
   });
 
