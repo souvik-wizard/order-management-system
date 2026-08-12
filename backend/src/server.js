@@ -18,7 +18,9 @@ const menuRoutes = require('./routes/menuRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 
 // ── Connect to MongoDB ─────────────────────────────────────────────────────────
-connectDB();
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
 
 // ── Express app ────────────────────────────────────────────────────────────────
 const app = express();
@@ -42,9 +44,11 @@ app.use(notFound);
 app.use(errorHandler);
 
 // ── Start server ───────────────────────────────────────────────────────────────
-app.listen(config.port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`✅  Server running on http://localhost:${config.port} [${config.nodeEnv}]`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(config.port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`✅  Server running on http://localhost:${config.port} [${config.nodeEnv}]`);
+  });
+}
 
 module.exports = app;
