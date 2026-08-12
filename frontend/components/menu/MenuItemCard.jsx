@@ -24,6 +24,7 @@ export default function MenuItemCard({ item }) {
       {/* Image */}
       <div className="relative h-44 sm:h-48 w-full bg-gray-100">
         <Image
+        loading='eager'
           src={item.imageUrl}
           alt={item.name}
           fill

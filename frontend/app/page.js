@@ -96,7 +96,7 @@ export default function MenuPage() {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all ${
+                  className={`cursor-pointer px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all ${
                     active
                       ? 'bg-orange-500 text-white shadow-sm font-semibold scale-105'
                       : 'bg-white border border-gray-200 text-gray-600 hover:border-orange-300 hover:text-orange-600'
@@ -118,7 +118,7 @@ export default function MenuPage() {
       {status === 'succeeded' && (
         <>
           {filteredItems.length === 0 ? (
-            <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center shadow-sm max-w-md mx-auto my-8">
+            <div className="text-center  max-w-md mx-auto my-8">
               <EmptyState
                 icon="🔍"
                 title="No menu items found"
