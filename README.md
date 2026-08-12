@@ -1,6 +1,6 @@
 # Order Management System
 
-A full-stack Order Management System with a Next.js frontend and an Express.js backend.
+A full-stack Order Management System with a Next.js frontend and an Nodejs backend.
 
 ## Running Tests
 

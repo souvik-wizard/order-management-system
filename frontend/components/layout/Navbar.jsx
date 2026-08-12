@@ -11,9 +11,8 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 font-bold text-gray-900 text-lg hover:text-orange-500 transition-colors">
-          <span className="text-2xl">🍔</span>
-          <span>QuickBite</span>
+        <Link href="/" className="flex items-center font-bold text-lg text-orange-500">
+          🍔 QuickBite
         </Link>
 
         {/* Navigation */}
@@ -32,12 +31,12 @@ export default function Navbar() {
           </Link>
           <Link
             href="/cart"
-            className="relative flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-orange-500 transition-colors"
+            className="relative flex items-center gap-3 text-sm font-medium text-gray-600 hover:text-orange-500 transition-colors"
           >
             <span className="text-lg">🛒</span>
             <span>Cart</span>
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-3 bg-orange-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 right-8 bg-orange-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
                 {totalItems > 99 ? '99+' : totalItems}
               </span>
             )}

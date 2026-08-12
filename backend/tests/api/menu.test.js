@@ -47,6 +47,37 @@ describe('GET /api/menu', () => {
     expect(MenuItem.find).toHaveBeenCalledWith({ isAvailable: true });
   });
 
+  it('should filter menu items by search query', async () => {
+    const mockFilteredItems = [
+      {
+        _id: '60c72b2f9b1d8e2568cf95a1',
+        name: 'Classic Cheeseburger',
+        description: 'Juicy beef patty',
+        price: 199,
+        category: 'Burgers',
+        isAvailable: true,
+      },
+    ];
+
+    MenuItem.find.mockReturnValue({
+      lean: jest.fn().mockResolvedValue(mockFilteredItems),
+    });
+
+    const res = await request(app).get('/api/menu?search=burger');
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data).toEqual(mockFilteredItems);
+    expect(MenuItem.find).toHaveBeenCalledWith({
+      isAvailable: true,
+      $or: [
+        { name: expect.any(RegExp) },
+        { description: expect.any(RegExp) },
+        { category: expect.any(RegExp) },
+      ],
+    });
+  });
+
   it('should forward service errors to error handler', async () => {
     MenuItem.find.mockReturnValue({
       lean: jest.fn().mockRejectedValue(new Error('Database error')),

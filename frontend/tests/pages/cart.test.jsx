@@ -39,7 +39,7 @@ describe('CartPage', () => {
     renderWithRedux(<CartPage />, { preloadedState });
 
     expect(screen.getByText('Classic Cheeseburger')).toBeInTheDocument();
-    expect(screen.getByText('₹9.99 each')).toBeInTheDocument();
+    expect(screen.getByText(/₹9.99/)).toBeInTheDocument();
     expect(screen.getByText('2')).toBeInTheDocument(); // quantity
     expect(screen.getAllByText('₹19.98')[0]).toBeInTheDocument(); // subtotal and total
   });

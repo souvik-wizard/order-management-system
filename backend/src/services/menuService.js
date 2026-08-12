@@ -7,11 +7,19 @@ const MenuItem = require('../models/MenuItem');
  */
 
 /**
- * Return all available menu items.
+ * Return all available menu items (optionally filtered by search query).
+ * @param {string} [searchQuery]
  * @returns {Promise<Array>}
  */
-const getAllMenuItems = async () => {
-  return MenuItem.find({ isAvailable: true }).lean();
+const getAllMenuItems = async (searchQuery) => {
+  const filter = { isAvailable: true };
+
+  if (searchQuery && typeof searchQuery === 'string' && searchQuery.trim()) {
+    const regex = new RegExp(searchQuery.trim(), 'i');
+    filter.$or = [{ name: regex }, { description: regex }, { category: regex }];
+  }
+
+  return MenuItem.find(filter).lean();
 };
 
 /**
