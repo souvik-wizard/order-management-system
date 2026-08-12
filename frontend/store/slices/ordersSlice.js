@@ -1,14 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { orderAPI } from '@/services/orderService';
 
-/**
- * Orders slice — manages order placement and real-time status tracking.
- *
- * State: { currentOrder, currentOrderStatus, items, status, error }
- */
-
-// ── Async thunks ───────────────────────────────────────────────────────────────
-
 export const placeOrder = createAsyncThunk('orders/create', async (orderData, { rejectWithValue }) => {
   try {
     const response = await orderAPI.create(orderData);
@@ -36,7 +28,6 @@ export const fetchOrders = createAsyncThunk('orders/fetchAll', async (_, { rejec
   }
 });
 
-// ── Slice ──────────────────────────────────────────────────────────────────────
 
 const initialState = {
   currentOrder: null,
@@ -92,7 +83,6 @@ const ordersSlice = createSlice({
 
 export const { clearCurrentOrder, setOrderStatus, clearError } = ordersSlice.actions;
 
-// ── Selectors ──────────────────────────────────────────────────────────────────
 export const selectCurrentOrder = (state) => state.orders.currentOrder;
 export const selectCurrentOrderStatus = (state) => state.orders.currentOrderStatus;
 export const selectAllOrders = (state) => state.orders.items;

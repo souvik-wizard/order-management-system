@@ -1,12 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { menuAPI } from '@/services/menuService';
 
-/**
- * Menu slice — manages food menu items fetched from the backend.
- *
- * State: { items, status, error }
- */
-
 export const fetchMenu = createAsyncThunk('menu/fetchAll', async (_, { rejectWithValue }) => {
   try {
     const response = await menuAPI.getAll();

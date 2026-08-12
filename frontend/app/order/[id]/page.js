@@ -16,7 +16,6 @@ import { orderAPI } from '@/services/orderService';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import ErrorMessage from '@/components/ui/ErrorMessage';
 
-// ── Status pipeline ────────────────────────────────────────────────────────────
 const STATUS_STEPS = [
   {
     key: 'ORDER_RECEIVED',
@@ -88,7 +87,6 @@ function StatusStepper({ currentStatus }) {
   );
 }
 
-// ── Page ───────────────────────────────────────────────────────────────────────
 
 export default function OrderTrackingPage() {
   const { id } = useParams();
@@ -140,7 +138,6 @@ export default function OrderTrackingPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, order?._id]);
 
-  // ── Render ─────────────────────────────────────────────────────────────────
   if (fetchStatus === 'loading' && !order) {
     return (
       <div className="max-w-xl mx-auto px-4 py-8">

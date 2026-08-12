@@ -1,16 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-/**
- * Cart slice — manages the shopping cart state.
- *
- * State shape:
- * {
- *   items: [{ id, name, price, quantity, imageUrl }],
- *   totalItems: number,
- *   totalPrice: number,
- * }
- */
-
 const initialState = {
   items: [],
   totalItems: 0,
