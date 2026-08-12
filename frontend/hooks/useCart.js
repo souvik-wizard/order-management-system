@@ -11,11 +11,6 @@ import {
   selectCartItemById,
 } from '@/store/slices/cartSlice';
 
-/**
- * useCart — convenience hook for cart operations.
- *
- * @returns cart state + action dispatchers
- */
 const useCart = () => {
   const dispatch = useDispatch();
 
@@ -32,7 +27,7 @@ const useCart = () => {
     deleteFromCart: (id) => dispatch(deleteFromCart(id)),
     updateQuantity: (id, quantity) => dispatch(updateQuantity({ id, quantity })),
     clearCart: () => dispatch(clearCart()),
-    getItemById: (id) => useSelector(selectCartItemById(id)), // use inside component
+    getItemById: (id) => useSelector(selectCartItemById(id)), 
   };
 };
 

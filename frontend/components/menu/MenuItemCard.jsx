@@ -4,10 +4,6 @@ import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart, removeFromCart, selectCartItemById } from '@/store/slices/cartSlice';
 
-/**
- * MenuItemCard — displays a single food item and allows adding/modifying cart quantity.
- * @param {{ item: Object }} props
- */
 export default function MenuItemCard({ item }) {
   const dispatch = useDispatch();
   const cartItem = useSelector(selectCartItemById(item._id));

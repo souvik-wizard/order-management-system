@@ -4,10 +4,6 @@ import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 import { addToCart, removeFromCart, deleteFromCart } from '@/store/slices/cartSlice';
 
-/**
- * CartItem — a single row in the cart page, styled for compact mobile responsiveness.
- * @param {{ item: Object }} props
- */
 export default function CartItem({ item }) {
   const dispatch = useDispatch();
 

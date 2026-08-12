@@ -5,11 +5,6 @@ import Link from 'next/link';
 import { formatDate } from '@/utils/helpers';
 import { orderAPI } from '@/services/orderService';
 
-/**
- * OrderCard — displays a single order summary in the order history page.
- * Listens to live SSE updates for active orders so the status badge updates in real time.
- * @param {{ order: Object }} props
- */
 export default function OrderCard({ order }) {
   const [currentStatus, setCurrentStatus] = useState(order?.status);
 
