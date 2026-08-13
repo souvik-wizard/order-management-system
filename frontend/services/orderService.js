@@ -1,6 +1,8 @@
 import apiClient from '@/lib/apiClient';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+// Strip any trailing slash to prevent double-slash URLs (e.g. if the env var
+// is set to "https://example.com/" the SSE path would become "//api/...")
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 export const orderAPI = {
   create: (data) => apiClient.post('/api/orders', data),
