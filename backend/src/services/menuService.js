@@ -2,15 +2,6 @@
 
 const MenuItem = require('../models/MenuItem');
 
-/**
- * Menu service — data access layer for menu items.
- */
-
-/**
- * Return all available menu items (optionally filtered by search query).
- * @param {string} [searchQuery]
- * @returns {Promise<Array>}
- */
 const getAllMenuItems = async (searchQuery) => {
   const filter = { isAvailable: true };
 
@@ -22,11 +13,6 @@ const getAllMenuItems = async (searchQuery) => {
   return MenuItem.find(filter).lean();
 };
 
-/**
- * Return a single menu item by ID.
- * @param {string} id
- * @returns {Promise<Object|null>}
- */
 const getMenuItemById = async (id) => {
   return MenuItem.findById(id).lean();
 };

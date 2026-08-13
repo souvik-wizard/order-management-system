@@ -1,10 +1,5 @@
 'use strict';
 
-/**
- * Placeholder product service.
- * Business logic will be moved here from the controller in the next step.
- */
-
 const getAllProducts = async (filters = {}) => {
   throw new Error('productService.getAllProducts – not yet implemented');
 };

@@ -4,20 +4,6 @@ const mongoose = require('mongoose');
 const Order = require('../models/Order');
 const MenuItem = require('../models/MenuItem');
 
-/**
- * Order service — all business logic for orders.
- * Prices and totals are ALWAYS computed from MongoDB, never trusted from the client.
- */
-
-/**
- * Create a new order.
- * - Validates that every menuItemId exists in MongoDB.
- * - Fetches authoritative prices from MongoDB.
- * - Computes per-item subtotals and order total.
- *
- * @param {{ customer: Object, items: Array }} data
- * @returns {Promise<Object>} the saved order
- */
 const createOrder = async ({ customer, items }) => {
   // Validate & collect IDs
   const menuItemIds = items.map((i) => i.menuItemId);
@@ -77,19 +63,10 @@ const createOrder = async ({ customer, items }) => {
   return order;
 };
 
-/**
- * Return all orders, newest first.
- * @returns {Promise<Array>}
- */
 const getAllOrders = async () => {
   return Order.find().sort({ createdAt: -1 }).lean();
 };
 
-/**
- * Return a single order by ID.
- * @param {string} id
- * @returns {Promise<Object|null>}
- */
 const getOrderById = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('Invalid order ID');
@@ -99,12 +76,6 @@ const getOrderById = async (id) => {
   return Order.findById(id).lean();
 };
 
-/**
- * Update the status of an order.
- * @param {string} id
- * @param {string} status
- * @returns {Promise<Object|null>}
- */
 const updateOrderStatus = async (id, status) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('Invalid order ID');
@@ -114,11 +85,7 @@ const updateOrderStatus = async (id, status) => {
   return Order.findByIdAndUpdate(id, { status }, { new: true, runValidators: true }).lean();
 };
 
-/**
- * Delete an order by ID.
- * @param {string} id
- * @returns {Promise<Object|null>}
- */
+
 const deleteOrder = async (id) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('Invalid order ID');
