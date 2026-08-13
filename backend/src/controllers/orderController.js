@@ -5,17 +5,13 @@ const Order = require('../models/Order');
 
 const { ORDER_STATUSES } = Order;
 
-/**
- * SSE client map: orderId → Set of response objects
- * Allows multiple browser tabs to subscribe to the same order.
- */
-const sseClients = new Map();
+
 
 // ── Status simulation ──────────────────────────────────────────────────────────
 
 /**
  * After an order is created, simulate the status progression in the background.
- * Updates MongoDB and broadcasts to any SSE subscribers.
+ * Writes status changes to MongoDB — the SSE polling endpoint reads from DB.
  *
  * Timeline:
  *  +0s  ORDER_RECEIVED  (already set on creation)
@@ -25,27 +21,17 @@ const sseClients = new Map();
 const simulateStatusProgression = (orderId) => {
   const id = orderId.toString();
 
-  const broadcast = (status) => {
-    const clients = sseClients.get(id);
-    if (clients) {
-      clients.forEach((res) => {
-        res.write(`data: ${JSON.stringify({ status })}\n\n`);
-      });
-    }
-  };
-
-  const updateAndBroadcast = async (status) => {
+  const updateStatus = async (status) => {
     try {
       await orderService.updateOrderStatus(id, status);
-      broadcast(status);
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.error(`SSE simulation error for order ${id}:`, err.message);
+      console.error(`Status simulation error for order ${id}:`, err.message);
     }
   };
 
-  setTimeout(() => updateAndBroadcast('PREPARING'), 6_000);
-  setTimeout(() => updateAndBroadcast('OUT_FOR_DELIVERY'), 14_000);
+  setTimeout(() => updateStatus('PREPARING'), 6_000);
+  setTimeout(() => updateStatus('OUT_FOR_DELIVERY'), 14_000);
 };
 
 // ── Controllers ────────────────────────────────────────────────────────────────
@@ -122,8 +108,13 @@ const deleteOrder = async (req, res, next) => {
 
 /**
  * GET /api/orders/:id/status/stream
- * Server-Sent Events endpoint.
- * Immediately sends the current status, then pushes updates as the simulation runs.
+ * Server-Sent Events endpoint — DB-polling strategy.
+ *
+ * Instead of relying on an in-memory sseClients Map (which is lost if the
+ * server restarts or sleeps on Render's free tier), this endpoint polls
+ * MongoDB every 3 seconds and pushes the status whenever it changes.
+ * This makes the SSE stream fully stateless and resilient to server restarts.
+ *
  * Closes after OUT_FOR_DELIVERY is reached or the client disconnects.
  */
 const streamOrderStatus = async (req, res, next) => {
@@ -139,35 +130,58 @@ const streamOrderStatus = async (req, res, next) => {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    res.setHeader('X-Accel-Buffering', 'no'); // disable nginx buffering
+    res.setHeader('X-Accel-Buffering', 'no'); // disable nginx/Render proxy buffering
     res.flushHeaders();
 
     // Send current status immediately
-    res.write(`data: ${JSON.stringify({ status: order.status })}\n\n`);
+    let lastStatus = order.status;
+    res.write(`data: ${JSON.stringify({ status: lastStatus })}\n\n`);
 
     // If already at final status, close immediately
-    if (order.status === 'OUT_FOR_DELIVERY') {
+    if (lastStatus === 'OUT_FOR_DELIVERY') {
       res.write('event: done\ndata: {}\n\n');
       return res.end();
     }
 
-    // Register this client
-    if (!sseClients.has(id)) sseClients.set(id, new Set());
-    sseClients.get(id).add(res);
+    let closed = false;
 
-    // Heartbeat to keep connection alive through proxies
+    // Heartbeat every 15s — keeps connection alive through Render's proxy
+    // (Render has ~55s idle timeout; 15s is safely within that window)
     const heartbeat = setInterval(() => {
-      res.write(': ping\n\n');
-    }, 20_000);
+      if (!closed) res.write(': ping\n\n');
+    }, 15_000);
+
+    // Poll MongoDB every 3 seconds for status changes
+    const pollInterval = setInterval(async () => {
+      if (closed) return;
+      try {
+        const fresh = await orderService.getOrderById(id);
+        if (!fresh) return;
+
+        if (fresh.status !== lastStatus) {
+          lastStatus = fresh.status;
+          res.write(`data: ${JSON.stringify({ status: lastStatus })}\n\n`);
+
+          // Close stream once final status is reached
+          if (lastStatus === 'OUT_FOR_DELIVERY') {
+            res.write('event: done\ndata: {}\n\n');
+            closed = true;
+            clearInterval(heartbeat);
+            clearInterval(pollInterval);
+            res.end();
+          }
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(`SSE poll error for order ${id}:`, err.message);
+      }
+    }, 3_000);
 
     // Clean up when client disconnects
     req.on('close', () => {
+      closed = true;
       clearInterval(heartbeat);
-      const clients = sseClients.get(id);
-      if (clients) {
-        clients.delete(res);
-        if (clients.size === 0) sseClients.delete(id);
-      }
+      clearInterval(pollInterval);
     });
   } catch (error) {
     next(error);

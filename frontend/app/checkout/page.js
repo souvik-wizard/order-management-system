@@ -80,8 +80,10 @@ export default function CheckoutPage() {
     const result = await dispatch(placeOrder(orderPayload));
 
     if (placeOrder.fulfilled.match(result)) {
-      dispatch(clearCart());
       router.push(`/order/${result.payload._id}`);
+      // Clear cart AFTER navigation to avoid the "cart is empty" flash
+      // on the checkout page before the route transition completes.
+      dispatch(clearCart());
     }
   };
 
