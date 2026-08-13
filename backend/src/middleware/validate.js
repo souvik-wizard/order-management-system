@@ -2,20 +2,13 @@
 
 const { ORDER_STATUSES } = require('../models/Order');
 
-/**
- * Validation helpers — return { valid: true } or { valid: false, errors: [] }
- */
-
 const PHONE_REGEX = /^[+]?[\d\s\-().]{7,20}$/;
 
-/**
- * Validate a POST /api/orders request body.
- */
 const validateCreateOrder = (req, res, next) => {
   const errors = [];
   const { customer, items } = req.body;
 
-  // ── Customer ────────────────────────────────────────────────────────────────
+  // Customer 
   if (!customer || typeof customer !== 'object') {
     errors.push('customer is required');
   } else {
@@ -28,7 +21,7 @@ const validateCreateOrder = (req, res, next) => {
     }
   }
 
-  // ── Items ───────────────────────────────────────────────────────────────────
+  // Items 
   if (!items || !Array.isArray(items) || items.length === 0) {
     errors.push('items must be a non-empty array');
   } else {
@@ -50,9 +43,6 @@ const validateCreateOrder = (req, res, next) => {
   next();
 };
 
-/**
- * Validate a PATCH /api/orders/:id/status request body.
- */
 const validateUpdateStatus = (req, res, next) => {
   const { status } = req.body;
 

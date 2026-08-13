@@ -5,12 +5,10 @@ const Order = require('../models/Order');
 
 const { ORDER_STATUSES } = Order;
 
-
-
-// ── Status simulation ──────────────────────────────────────────────────────────
+// Status simulation
 
 /**
- * After an order is created, simulate the status progression in the background.
+ * After an order is created, it simulate the status progression in the background.
  * Writes status changes to MongoDB — the SSE polling endpoint reads from DB.
  *
  * Timeline:
@@ -34,11 +32,8 @@ const simulateStatusProgression = (orderId) => {
   setTimeout(() => updateStatus('OUT_FOR_DELIVERY'), 14_000);
 };
 
-// ── Controllers ────────────────────────────────────────────────────────────────
+// Controllers
 
-/**
- * POST /api/orders
- */
 const createOrder = async (req, res, next) => {
   try {
     const order = await orderService.createOrder(req.body);
@@ -49,9 +44,6 @@ const createOrder = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/orders
- */
 const getOrders = async (_req, res, next) => {
   try {
     const orders = await orderService.getAllOrders();
@@ -61,9 +53,6 @@ const getOrders = async (_req, res, next) => {
   }
 };
 
-/**
- * GET /api/orders/:id
- */
 const getOrderById = async (req, res, next) => {
   try {
     const order = await orderService.getOrderById(req.params.id);
@@ -76,9 +65,6 @@ const getOrderById = async (req, res, next) => {
   }
 };
 
-/**
- * PATCH /api/orders/:id/status
- */
 const updateOrderStatus = async (req, res, next) => {
   try {
     const order = await orderService.updateOrderStatus(req.params.id, req.body.status);
@@ -91,9 +77,6 @@ const updateOrderStatus = async (req, res, next) => {
   }
 };
 
-/**
- * DELETE /api/orders/:id
- */
 const deleteOrder = async (req, res, next) => {
   try {
     const order = await orderService.deleteOrder(req.params.id);

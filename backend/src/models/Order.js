@@ -2,12 +2,6 @@
 
 const mongoose = require('mongoose');
 
-/**
- * Order model — represents a placed food delivery order.
- *
- * Status lifecycle: ORDER_RECEIVED → PREPARING → OUT_FOR_DELIVERY
- */
-
 const ORDER_STATUSES = ['ORDER_RECEIVED', 'PREPARING', 'OUT_FOR_DELIVERY'];
 
 const orderItemSchema = new mongoose.Schema(

@@ -2,10 +2,6 @@
 
 const mongoose = require('mongoose');
 
-/**
- * Product schema.
- * Placeholder — fields will be finalised in the next step.
- */
 const productSchema = new mongoose.Schema(
   {
     name: {

@@ -1,10 +1,5 @@
 'use strict';
 
-/**
- * Placeholder product controller.
- * Will be implemented in the next step when business logic is added.
- */
-
 const getProducts = async (_req, res, next) => {
   try {
     res.json({ success: true, message: 'getProducts – not yet implemented', data: [] });

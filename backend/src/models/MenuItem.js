@@ -2,9 +2,6 @@
 
 const mongoose = require('mongoose');
 
-/**
- * MenuItem model — represents a food item on the menu.
- */
 const menuItemSchema = new mongoose.Schema(
   {
     name: {

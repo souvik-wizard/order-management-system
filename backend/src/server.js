@@ -12,20 +12,20 @@ const corsOptions = require('./config/corsOptions');
 const errorHandler = require('./middleware/errorHandler');
 const notFound = require('./middleware/notFound');
 
-// ── Route imports ──────────────────────────────────────────────────────────────
+//Route imports 
 const healthRoutes = require('./routes/healthRoutes');
 const menuRoutes = require('./routes/menuRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 
-// ── Connect to MongoDB ─────────────────────────────────────────────────────────
+// Connect to MongoDB
 if (process.env.NODE_ENV !== 'test') {
   connectDB();
 }
 
-// ── Express app ────────────────────────────────────────────────────────────────
+// Express app
 const app = express();
 
-// ── Core middleware ────────────────────────────────────────────────────────────
+// Core middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -34,16 +34,16 @@ if (config.isDev) {
   app.use(morgan('dev'));
 }
 
-// ── Routes ─────────────────────────────────────────────────────────────────────
+// Routes 
 app.use('/api/health', healthRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/orders', orderRoutes);
 
-// ── 404 & error handling ───────────────────────────────────────────────────────
+// 404 & error handling 
 app.use(notFound);
 app.use(errorHandler);
 
-// ── Start server ───────────────────────────────────────────────────────────────
+// Start server
 if (process.env.NODE_ENV !== 'test') {
   app.listen(config.port, () => {
     // eslint-disable-next-line no-console

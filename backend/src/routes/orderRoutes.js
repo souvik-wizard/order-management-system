@@ -14,14 +14,14 @@ const {
 
 const { validateCreateOrder, validateUpdateStatus } = require('../middleware/validate');
 
-/**
- * POST   /api/orders          — place a new order
- * GET    /api/orders          — list all orders
- * GET    /api/orders/:id      — get single order
- * PATCH  /api/orders/:id/status — update order status
- * DELETE /api/orders/:id      — delete an order
- * GET    /api/orders/:id/status/stream — SSE status stream
- */
+
+// POST   /api/orders          — place a new order
+// GET    /api/orders          — list all orders
+// GET    /api/orders/:id      — get single order
+// PATCH  /api/orders/:id/status — update order status
+// DELETE /api/orders/:id      — delete an order
+// GET    /api/orders/:id/status/stream — SSE status stream
+
 
 router.post('/', validateCreateOrder, createOrder);
 router.get('/', getOrders);
