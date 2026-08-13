@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,8 +20,10 @@ export default function CheckoutPage() {
 
   const [form, setForm] = useState({ name: '', address: '', phone: '' });
   const [errors, setErrors] = useState({});
+  // Prevent the empty-cart guard from flashing during submit → navigation
+  const isSubmittingRef = useRef(false);
 
-  if (cartItems.length === 0) {
+  if (cartItems.length === 0 && !isSubmittingRef.current) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-8">
         <EmptyState
@@ -80,10 +82,11 @@ export default function CheckoutPage() {
     const result = await dispatch(placeOrder(orderPayload));
 
     if (placeOrder.fulfilled.match(result)) {
-      router.push(`/order/${result.payload._id}`);
-      // Clear cart AFTER navigation to avoid the "cart is empty" flash
-      // on the checkout page before the route transition completes.
+      // Set flag BEFORE clearing cart so the empty-cart guard is skipped
+      // during the React re-render that happens before navigation completes.
+      isSubmittingRef.current = true;
       dispatch(clearCart());
+      router.push(`/order/${result.payload._id}`);
     }
   };
 

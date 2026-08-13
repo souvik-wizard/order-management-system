@@ -131,7 +131,12 @@ const streamOrderStatus = async (req, res, next) => {
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
     res.setHeader('X-Accel-Buffering', 'no'); // disable nginx/Render proxy buffering
+    // Explicit CORS header for SSE — Render's proxy can strip it on long-lived responses
+    res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL || '*');
     res.flushHeaders();
+
+    // Tell browser to wait 3s before reconnecting on any error
+    res.write('retry: 3000\n\n');
 
     // Send current status immediately
     let lastStatus = order.status;

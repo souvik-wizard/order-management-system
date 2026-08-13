@@ -126,8 +126,16 @@ export default function OrderTrackingPage() {
       }
     };
 
-    es.onerror = () => {
+    // Listen for the explicit 'done' event sent when stream reaches final status
+    es.addEventListener('done', () => {
       es.close();
+    });
+
+    // DO NOT close on error — let EventSource auto-reconnect.
+    // In prod (Render cold starts, proxy hiccups), transient errors are normal.
+    // The browser retries automatically using the retry interval set by the server.
+    es.onerror = () => {
+      // intentionally empty: allow auto-reconnect
     };
 
     eventSourceRef.current = es;
