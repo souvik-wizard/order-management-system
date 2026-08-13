@@ -43,6 +43,7 @@ class MockEventSource {
   constructor(url) {
     this.url = url;
     this.close = jest.fn();
+    this.addEventListener = jest.fn();
     MockEventSource.instances.push(this);
   }
 }
@@ -79,7 +80,7 @@ describe('OrderTrackingPage', () => {
     },
   };
 
-  it('renders order details and delivery info', () => {
+  it('renders order details and delivery info', async () => {
     renderWithRedux(<OrderTrackingPage />, { preloadedState: orderPreloadedState });
 
     expect(screen.getByText('Order Confirmed!')).toBeInTheDocument();
@@ -88,18 +89,22 @@ describe('OrderTrackingPage', () => {
     expect(screen.getAllByText('₹9.99')[0]).toBeInTheDocument();
     expect(screen.getByText('Jane Smith')).toBeInTheDocument();
     expect(screen.getByText('456 Delivery Rd')).toBeInTheDocument();
+
+    await act(async () => {});
   });
 
-  it('highlights current status and shows animated text', () => {
+  it('highlights current status and shows animated text', async () => {
     renderWithRedux(<OrderTrackingPage />, { preloadedState: orderPreloadedState });
 
     // Status steps should show
     expect(screen.getByText('Order Received')).toBeInTheDocument();
     expect(screen.getByText('Preparing')).toBeInTheDocument();
     expect(screen.getByText('Out for Delivery')).toBeInTheDocument();
+
+    await act(async () => {});
   });
 
-  it('initializes EventSource stream and updates status on message', () => {
+  it('initializes EventSource stream and updates status on message', async () => {
     const { store } = renderWithRedux(<OrderTrackingPage />, { preloadedState: orderPreloadedState });
 
     expect(MockEventSource.instances).toHaveLength(1);
@@ -113,14 +118,18 @@ describe('OrderTrackingPage', () => {
 
     // Verify status updated in Redux slice
     expect(store.getState().orders.currentOrderStatus).toBe('PREPARING');
+
+    await act(async () => {});
   });
 
-  it('closes EventSource connection on unmount', () => {
+  it('closes EventSource connection on unmount', async () => {
     const { unmount } = renderWithRedux(<OrderTrackingPage />, { preloadedState: orderPreloadedState });
 
     const esInstance = MockEventSource.instances[0];
     unmount();
 
     expect(esInstance.close).toHaveBeenCalled();
+
+    await act(async () => {});
   });
 });

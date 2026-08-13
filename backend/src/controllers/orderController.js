@@ -1,9 +1,6 @@
 'use strict';
 
 const orderService = require('../services/orderService');
-const Order = require('../models/Order');
-
-const { ORDER_STATUSES } = Order;
 
 // Status simulation
 

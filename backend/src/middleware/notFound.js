@@ -1,7 +1,7 @@
 'use strict';
 
-const notFound = (req, res, next) => {
-  const error = new Error(`Not Found - ${req.method} ${req.originalUrl}`);
+const notFound = (_req, res, next) => {
+  const error = new Error('Not Found');
   error.statusCode = 404;
   next(error);
 };
