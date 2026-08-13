@@ -40,7 +40,7 @@ export default function CheckoutPage() {
     );
   }
 
-  // ── Validation ─────────────────────────────────────────────────────────────
+  // Validation
   const validate = () => {
     const errs = {};
     if (!form.name.trim()) errs.name = 'Name is required';
@@ -92,7 +92,7 @@ export default function CheckoutPage() {
 
   const isLoading = orderStatus === 'loading';
 
-  // ── Render ─────────────────────────────────────────────────────────────────
+  // Render
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-7">Checkout</h1>
